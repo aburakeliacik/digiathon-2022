@@ -42,10 +42,11 @@ contract Sale is AccessControl {
     bytes32 private constant BUYER = keccak256("BUYER");
     bytes32 private constant BANK = keccak256("BANK");
 
-    constructor(address _stakeholderAddress, uint _percentage) {
+    constructor(address _stakeholderAddress, uint _percentage, uint _salePrice) {
         _grantRole(OWNER, msg.sender);
         owner = Owner(msg.sender, false, _stakeholderAddress, _percentage);
         bank = Buyer(address(0), false, 0);
+        deedPrice = _salePrice;
     }
 
     function setPrice(uint256 _deedPrice) public onlyRole(OWNER){
@@ -93,10 +94,16 @@ contract Sale is AccessControl {
     }
 
 
-    function getAddress() public view returns(address){
-        return owner.stakeholderAddress;
-        
+    function getOwner() public view returns(address){
+        return owner.addr;
     }
 
+    function getPrice() public view returns(uint){
+        return deedPrice;
+    }
+
+    function getPercentage() public view returns(uint){
+        return owner.percentage;
+    }
 
 }

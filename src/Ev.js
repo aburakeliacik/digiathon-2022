@@ -25,28 +25,6 @@ const Ev = () => {
     const [account, setAccount] = useState(); 
     const [instance, setInstance] = useState();
 
-    /*
-    const baglan = async () => {
-        const getWeb = new GetWeb3();
-        let web = await getWeb.getWeb3();
-        setweb3(web);
-    
-        if (web.eth.getAccounts === undefined) {
-            console.log("undefined");
-        } else {
-            console.log("not undefined");
-        }
-        const Account = new GetAccount();
-        let account = Account.getAccount(web);
-        //setAccount("0xdeee5e1742aab8f4bed8f18ebc055dfadf6f0a1a");
-        setAccount(account[0]);
-  
-        
-        const Contract = new GetContract();
-        let main = await Contract.getContract(web, HelloWorldJSON);
-        setInstance(main);
-    }*/
-
     const baglan = async () => {
         try {
 
@@ -115,8 +93,8 @@ const Ev = () => {
         try {
             setAlici(document.getElementById("aliciAddr").value);
 
-            var mainContract = await new web3.eth.Contract(MainContract.abi, "0x155Ba44cfdcBcEFf5CCD5B5e7af334987e19a748");
-            await mainContract.methods.createElection("0x52f81eF7fC5dce7a5753207b9d27e6e2fa7b7AB1", yuzdeler).send({from : "0xD9f96B93eDe61eCAd4206341d5Eb352bF6E1eE16"});
+            var mainContract = await new web3.eth.Contract(MainContract.abi, "0xBdD49a9fe0cc424236c41A8831431EBF85149d3c");
+            await mainContract.methods.createElection("0x52f81eF7fC5dce7a5753207b9d27e6e2fa7b7AB1", yuzdeler, fiyat).send({from : "0xD9f96B93eDe61eCAd4206341d5Eb352bF6E1eE16"});
             
             let eCount = await mainContract.methods.saleId().call();
             console.log("election count");
@@ -132,6 +110,7 @@ const Ev = () => {
             var stakeHolder = await new web3.eth.Contract(StakeHolder.abi, "0x52f81eF7fC5dce7a5753207b9d27e6e2fa7b7AB1");
             await stakeHolder.methods.approve(salesAddr, yuzdeler).send({from: "0xD9f96B93eDe61eCAd4206341d5Eb352bF6E1eE16"});
 
+            setSatisDurumu("Satışta");
             console.log("approve bitt");
 
         } catch(err) {
@@ -152,7 +131,7 @@ const Ev = () => {
 
     return ( 
         <>
-        <div>
+        <div className="container card">
             <h3>Ev Bilgileri</h3>
             <table className="table table-hover table-bordered">
                 <thead>
@@ -167,15 +146,14 @@ const Ev = () => {
         <div className="container card">
             <h3>Satışa Sun</h3>
             <div className="form-group" style={{margin:"10px"}}>
-            {rol == "0" && <input type="text" value={fiyat} onChange={e => setFiyat(e.target.value)} placeholder="Fiyat" />}<br></br><br></br>
-            {rol == "0" && <input type="text" value={tc} onChange={e => setTc(e.target.value)} placeholder="TC" />}<br></br><br></br><br></br>
-            {rol == "0" && <input type="text" value={pay} onChange={e => setPay(e.target.value)} placeholder="Satılacak Pay" />}<br></br><br></br><br></br>
-            {rol == "0" && <label><input type="checkbox" id="evli" onChange={payEkle} />&nbsp;&nbsp;&nbsp;Aracı eklenecek mi ?</label>}<br></br><br></br><br></br>
-            {rol == "0" && <input type="text" id="aliciAddr" placeholder="Alici Adresi" />}<br></br><br></br>
-            {rol == "0" && <button onClick={satisaKoy} className="btn btn-primary" style={{margin:"10px"}}>Satisa Koy</button>}
-            {rol == "0" && <button onClick={iptal} className="btn btn-primary" style={{margin:"10px"}}>İptal</button>}
-            {rol == "1" && <button onClick={aliciEkle} className="btn btn-primary" style={{margin:"10px"}}>Alici Ekle</button>}
-            {rol == "1" && <button onClick={aliciCikar} className="btn btn-primary" style={{margin:"10px"}}>Alici Çıkar</button>}
+                {rol == "0" && <label for="fiyat"> Fiyat <input type="text" id="fiyat" value={fiyat} onChange={e => setFiyat(e.target.value)} placeholder="" /></label>}<br></br><br></br>
+                {rol == "0" && <label for="tc"> TC No <input type="text" id="tc" value={tc} onChange={e => setTc(e.target.value)} placeholder="" /> </label>}<br></br><br></br><br></br>
+                {rol == "0" && <label for="pay"> Satılacak Pay <input type="text" id="pay" value={pay} onChange={e => setPay(e.target.value)} placeholder="" /></label>}<br></br><br></br><br></br>
+                {rol == "0" && <label><input type="checkbox" id="evli" onChange={payEkle} />&nbsp;&nbsp;&nbsp;Aracı eklenecek mi ?</label>}<br></br><br></br><br></br>
+                {rol == "0" && <label for="aliciAddr">Alıcı Adresi <input type="text" id="aliciAddr" placeholder="0xe937ab4294" /></label>}<br></br><br></br>
+                {rol == "0" && <button onClick={satisaKoy} className="btn btn-primary" style={{margin:"10px"}}>Satisa Koy</button>}
+                {rol == "1" && <button onClick={aliciEkle} className="btn btn-primary" style={{margin:"10px"}}>Alici Ekle</button>}
+                {rol == "1" && <button onClick={aliciCikar} className="btn btn-primary" style={{margin:"10px"}}>Alici Çıkar</button>}
             </div>
         </div>
         </>

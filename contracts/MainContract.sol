@@ -7,8 +7,8 @@ contract MainContract {
   uint public saleId = 0;
   mapping (uint => address) public Sales;
 
-  function createElection (address stakeholderAddr, uint percentage) public {
-    Sale election = new Sale(stakeholderAddr, percentage);
+  function createElection (address stakeholderAddr, uint percentage, uint fiyat) public {
+    Sale election = new Sale(stakeholderAddr, percentage, fiyat);
     Sales[saleId] = address(election);
     saleId++;
   }
