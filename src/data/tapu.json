@@ -1,0 +1,24 @@
+[
+    {
+        "tapu_id" : "0",
+        "sahipler": [
+            { "id" : "0", "satis_durumu" :"0", "satis_adresi" : "0x0"},
+            { "id" : "1", "satis_durumu" :"0", "satis_adresi" : "0x0"}
+        ]
+    },
+    {
+        "tapu_id" : "1",
+        "sahipler": [
+            { "id" : "0", "satis_durumu" :"0", "satis_adresi" : "0x0"},
+            { "id" : "1", "satis_durumu" :"0", "satis_adresi" : "0x0"},
+            { "id" : "2", "satis_durumu" :"0", "satis_adresi" : "0x0"}
+        ]
+    },
+    {
+        "tapu_id" : "2",
+        "sahipler": [
+            { "id" : "1", "satis_durumu" :"0", "satis_adresi" : "0x0"},
+            { "id" : "2", "satis_durumu" :"0", "satis_adresi" : "0x0"}
+        ]
+    }
+]
