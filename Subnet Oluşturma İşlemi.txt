@@ -1,0 +1,2 @@
+Subnet oluşturma işlemine başlandı.
+Private network: 176.236.121.139:9657
