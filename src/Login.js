@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import HelloWorldJSON from "./build/contracts/HelloWorld.json";
 
 const Login = () => {
 

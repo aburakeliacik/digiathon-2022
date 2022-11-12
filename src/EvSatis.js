@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-// 1. Importing other modules
-import { GetWeb3, GetContract, GetAccount } from "./BlockchainUtil";
 
 const EvSatis = () => {
 
@@ -43,11 +41,6 @@ const EvSatis = () => {
         }
         setTapular(tapu);
         setDurumlar(durum);
-        console.log(tapu);
-        console.log(durum);
-        tapular.map((t) => (
-            console.log(t)
-        ))
     }, []);
     
 
