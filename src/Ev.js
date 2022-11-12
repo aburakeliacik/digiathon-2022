@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import React, { useState } from "react";
 import { useLocation } from "react-router-dom";
+import { GetWeb3, GetContract, GetAccount } from "./BlockchainUtil";
 
 const Ev = () => {
 
@@ -12,6 +13,31 @@ const Ev = () => {
     const [yuzde, setYuzde] = useState("");
     const [rol, setRol] = useState("");
     const [tc, setTc] = useState("");
+    const [web3, setweb3] = useState(); 
+    const [account, setAccount] = useState(); 
+    const [instance, setInstance] = useState();
+
+    /*
+    const baglan = async () => {
+        const getWeb = new GetWeb3();
+        let web = await getWeb.getWeb3();
+        setweb3(web);
+    
+        if (web.eth.getAccounts === undefined) {
+            console.log("undefined");
+        } else {
+            console.log("not undefined");
+        }
+        const Account = new GetAccount();
+        let account = Account.getAccount(web);
+        //setAccount("0xdeee5e1742aab8f4bed8f18ebc055dfadf6f0a1a");
+        setAccount(account[0]);
+  
+        
+        const Contract = new GetContract();
+        let main = await Contract.getContract(web, HelloWorldJSON);
+        setInstance(main);
+    }*/
 
     useEffect(() => {
         let kisiRol = sessionStorage.getItem("rol");

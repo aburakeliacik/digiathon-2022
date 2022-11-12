@@ -1,36 +1,14 @@
 import React, { useState } from "react";
 import { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
+// 1. Importing other modules
+import { GetWeb3, GetContract, GetAccount } from "./BlockchainUtil";
 
 const EvSatis = () => {
 
     const [data, setData] = useState();
     const [tapular, setTapular] = useState([]);
     const [durumlar, setDurumlar] = useState([]);
-    const [web3, setweb3] = useState(); 
-    const [account, setAccount] = useState(); 
-    const [instance, setInstance] = useState();
-
-    const baglan = async () => {
-        const getWeb = new GetWeb3();
-        let web = await getWeb.getWeb3();
-        setweb3(web);
-    
-        if (web.eth.getAccounts === undefined) {
-            console.log("undefined");
-        } else {
-            console.log("not undefined");
-        }
-        const Account = new GetAccount();
-        let account = Account.getAccount(web);
-        //setAccount("0xdeee5e1742aab8f4bed8f18ebc055dfadf6f0a1a");
-        setAccount(account[0]);
-  
-        
-        const Contract = new GetContract();
-        let main = await Contract.getContract(web, HelloWorldJSON);
-        setInstance(main);
-    }
 
     useEffect(() => {
         // tapular cekilir
