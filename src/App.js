@@ -31,16 +31,6 @@ function App() {
 
   return (
     <>
-    <nav
-    className="navbar navbar-dark shadow"
-    style={{
-      backgroundColor: "#1b2021",
-      height: "60px",
-      color: "white",
-      marginBottom: "50px",
-    }}>
-    <Link to="/" style={{textDecoration :"none"}}><b style={{ cursor: "pointer", color: "white" }}>e-Devlet Kapısı</b></Link>
-    </nav>
     <Routes>
       <Route path="/" element={<Login />}> </Route>
       <Route path="/satis/evim" element={<Ev />}> </Route>
