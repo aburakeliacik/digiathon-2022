@@ -104,7 +104,7 @@ const Login = () => {
                   </div>
                   <p class="mt-4 text-sm text-center">
                     Hesabınız yok mu?
-                    <a href="./pages/sign-up.html" class="text-primary text-gradient font-weight-bold">Üye ol</a>
+                    <a href="./pages/sign-up.html" class="text-primary text-gradient font-weight-bold">&nbsp;&nbsp;Üye ol</a>
                   </p>
                 </form>
               </div>

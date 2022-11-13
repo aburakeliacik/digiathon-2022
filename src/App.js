@@ -8,6 +8,7 @@ import EvAraci from './EvAraci';
 import Ev from './Ev';
 import { Link } from 'react-router-dom';
 import EvAlici from './EvAlici';
+import Banka from './Banka';
 // 1. Importing other modules
 
 function App() {
@@ -40,6 +41,7 @@ function App() {
       <Route path="/alis" element={<EvAlis />}> </Route>
       <Route path="/aracilik" element={<EvAraci />}> </Route>
       <Route path="/anasayfa" element={<Homepage />}> </Route>
+      <Route path="/banka" element={<Banka />}> </Route>
     </Routes>
     </>
   );

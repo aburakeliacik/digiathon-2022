@@ -42,13 +42,8 @@ const Ev = () => {
             // 4. Load Contract
             const Contract = new GetContract();
             //var deeds = await Contract.getContract(web, Deeds);
-            var deeds = await new web.eth.Contract(Deeds.abi, "0x412a98aDBE04d457c1E028438F0E0c3f74F4f1de");
-
-            //var deeds = await Contract.getContract(web, Deeds);
-            var ownerId = parseInt(location.state.from);
-            var ownerAddress = await deeds.methods.ownerOf(ownerId).send({from: "0xD9f96B93eDe61eCAd4206341d5Eb352bF6E1eE16"});
             //var ownerAddress = await deeds.ownerOf(0, {from: "0x412a98aDBE04d457c1E028438F0E0c3f74F4f1de"});
-            console.log(ownerAddress);
+            //console.log(ownerAddress);
 
             var stakeHolder = await new web.eth.Contract(StakeHolder.abi, "0x52f81eF7fC5dce7a5753207b9d27e6e2fa7b7AB1");
             var yuzde = await stakeHolder.methods.balanceOf("0xD9f96B93eDe61eCAd4206341d5Eb352bF6E1eE16").call();
@@ -64,7 +59,7 @@ const Ev = () => {
         setRol(kisiRol);
         // tapular cekilir
         let jsonData = require("./data/tapu.json");
-        console.log("hey");
+        
         for (let i = 0; i<jsonData.length; i++) {
 
             if (location.state.from == jsonData[i].tapu_id) {
@@ -96,21 +91,22 @@ const Ev = () => {
         try {
             setAlici(document.getElementById("aliciAddr").value);
 
+            //var deeds = await new web3.eth.Contract(Deeds.abi, "0x412a98aDBE04d457c1E028438F0E0c3f74F4f1de");
+            //var ownerId = parseInt(location.state.from);
+            //var ownerAddress = await deeds.methods.ownerOf(ownerId).send({from: "0xD9f96B93eDe61eCAd4206341d5Eb352bF6E1eE16"});
             var mainContract = await new web3.eth.Contract(MainContract.abi, "0xBdD49a9fe0cc424236c41A8831431EBF85149d3c");
             await mainContract.methods.createElection("0x52f81eF7fC5dce7a5753207b9d27e6e2fa7b7AB1", yuzdeler, fiyat).send({from : "0xD9f96B93eDe61eCAd4206341d5Eb352bF6E1eE16"});
-            
             let eCount = await mainContract.methods.saleId().call();
- 
             var salesAddr = await mainContract.methods.Sales(eCount-1).call();
-
             let saleCon = await new web3.eth.Contract(Sale.abi, salesAddr);
+
             saleCon.methods.addBuyer(aliciAddr).send({from : "0xD9f96B93eDe61eCAd4206341d5Eb352bF6E1eE16"});
 
             var stakeHolder = await new web3.eth.Contract(StakeHolder.abi, "0x52f81eF7fC5dce7a5753207b9d27e6e2fa7b7AB1");
             await stakeHolder.methods.approve(salesAddr, yuzdeler).send({from: "0xD9f96B93eDe61eCAd4206341d5Eb352bF6E1eE16"});
 
             setSatisDurumu("Satışta");
-            console.log("approve bitti");
+            alert("Satış işlemi başarılı sonuçlandı.");
 
         } catch(err) {
             console.log(err);
@@ -216,8 +212,8 @@ const Ev = () => {
           
             <li class="nav-item d-flex align-items-center">
               <a href="../pages/sign-in.html" class="nav-link text-body font-weight-bold px-0">
-                <i class="fa fa-user me-sm-1"></i>
-                <span class="d-sm-inline d-none">Giriş yap</span>
+                <i class="fa fa-user me-sm-1"></i> 
+                <span class="d-sm-inline d-none"><Link to="/">Çıkış Yap</Link></span>
               </a>
             </li>
             <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
@@ -323,6 +319,7 @@ const Ev = () => {
                 <li class="list-group-item border-0 d-flex p-4 mb-2 bg-gray-100 border-radius-lg">
                   <div class="d-flex flex-column">
                     <h6 class="mb-3 text-sm">{location.state.from} numaralı tapu bilgileri</h6>
+                    <span class="mb-2 text-xs">Adres Bilgisi: <span class="text-dark font-weight-bold ms-sm-2">Elite Grand Palas, kat: 2, daire:4</span></span>
                     <span class="mb-2 text-xs">Satış Durumu: <span class="text-dark font-weight-bold ms-sm-2">{satisDurumu}</span></span>
                     <span class="mb-2 text-xs">Satış Payı: <span class="text-dark ms-sm-2 font-weight-bold">{yuzdeler}</span></span>
                     <span class="text-xs">Alıcı Adresi: <span class="text-dark ms-sm-2 font-weight-bold">{aliciAddr}</span></span>
@@ -340,11 +337,14 @@ const Ev = () => {
               <div class="row">
                 <div class="col-md-14 col-14">
                   <div class="card" style={{textAlign:"center"}}>
+                  <div class="card-header pb-0 px-3">
+                    <h6 class="mb-0">Satış İşlemleri</h6>
+                  </div>
                     <div class="card-body pt-0 p-3 text-center">
                       <hr class="horizontal dark my-3" />
                       <h5 class="mb-0"><label for="fiyat"> Fiyat <input style={{width: "100%",display:"inline-block"}} type="text" id="fiyat" value={fiyat} onChange={e => setFiyat(e.target.value)} placeholder="Fiyat" /></label></h5>
                       <h5 class="mb-0"><label for="pay" className="inp"> Satılacak Pay <input className="inp" style={{width: "100%",display:"inline-block"}} type="text" id="pay" value={pay} onChange={e => setPay(e.target.value)} placeholder="Pay Oranı" /></label></h5>
-                      <h5 class="mb-0"><label>Aracı eklenecek mi ?<input type="checkbox" id="evli" onChange={payEkle} /></label></h5><br></br>
+                      <h5 class="mb-0"><label><input type="checkbox" id="evli" onChange={payEkle} />&nbsp;Aracı eklenecek mi ?</label></h5><br></br>
                       <h5 class="mb-0"><label for="aliciAddr">Alıcı Adresi <input style={{width: "100%",display:"inline-block"}} type="text" id="aliciAddr" placeholder="0xe937ab4294" /></label></h5>
                       <div class="card-body p-3">
                         <div class="row">

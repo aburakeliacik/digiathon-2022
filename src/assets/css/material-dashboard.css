@@ -8075,27 +8075,6 @@ fieldset:disabled .btn {
   color: #1A73E8 !important;
 }
 
-input         {
-  font-size:18px;
-  padding:10px 10px 10px 5px;
-  display:block;
-  width:300px;
-  border:none;
-  border-bottom:1px solid #757575;
-}
-input:focus     { outline:none; }
-
-label          {
-  color:#999; 
-  font-size:18px;
-  font-weight:normal;
-  pointer-events:none;
-  left:5px;
-  top:10px;
-  transition:0.2s ease all; 
-  -moz-transition:0.2s ease all; 
-  -webkit-transition:0.2s ease all;
-}
 
 .link-info:hover,
 .link-info:focus {

@@ -3,6 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { GetWeb3, GetContract, GetAccount } from "./BlockchainUtil";
 import MainContract from "./build/contracts/MainContract.json";
 import Sale from "./build/contracts/Sale.json";
+import Deeds from "./build/contracts/Deeds.json";
+
 
 const EvAlis = () => {
 
@@ -21,7 +23,7 @@ const EvAlis = () => {
 
             const getWeb = new GetWeb3();
             let web = await getWeb.getWeb3();
-            setweb3(web);
+            await setweb3(web);
         
             if (web.eth.getAccounts === undefined) {
                 console.log("undef");
@@ -29,11 +31,12 @@ const EvAlis = () => {
                 console.log("degil");
             }
 
-            // 4. Load Contract
+            // 4. Load Contract 
             const Contract = new GetContract();
             //var deeds = await Contract.getContract(web, Deeds);
+            console.log("girdi");
             var mainContract = await new web.eth.Contract(MainContract.abi, "0xBdD49a9fe0cc424236c41A8831431EBF85149d3c");
-
+            console.log("main alindi");
             let eCount = await mainContract.methods.saleId().call();
             console.log("election count");
             console.log(eCount);
@@ -44,36 +47,32 @@ const EvAlis = () => {
             var ownerAddr = await saleCon.methods.getOwner().call();
             var percentage = await saleCon.methods.getPercentage().call();
             
-            setFiyat(price);
-            setSahipAdres(ownerAddr);
-            setYuzde(percentage);
-
+            await setFiyat(price);
+            await setSahipAdres(ownerAddr);
+            await setYuzde(percentage);
         } catch(err) {
             console.log(err);
         }
 
     }
 
-    useEffect(() => {
-        baglan();
-      }, []);
-
-      
-    const bankaEkle = () => {
-        setPesin(0);
-        setBanka(1);
-    }
+    useEffect( () => {
+        baglan(); 
+    }, []);
 
     const tutarHesapla = (e) => {
         setKredi(e.target.value);
-        setTutar((fiyat-kredi).toString());
+        setTutar((fiyat-e.target.value).toString())
     };
-
-    
-    const onayla = () => {
-        
+     
+    const onayla = async () => { 
+        var mainContract = await new web3.eth.Contract(MainContract.abi, "0xBdD49a9fe0cc424236c41A8831431EBF85149d3c");
+        let eCount = await mainContract.methods.saleId().call();
+        var salesAddr = await mainContract.methods.Sales(eCount-1).call();
+        let saleCon = await new web3.eth.Contract(Sale.abi, salesAddr);
+        saleCon.methods.addBuyer("0xD9f96B93eDe61eCAd4206341d5Eb352bF6E1eE16").send({from : "0xD9f96B93eDe61eCAd4206341d5Eb352bF6E1eE16"});
+        alert("Banka ödeme onayı gönderilmiştir.");
     }
-
     const pesinVer = () => {
         setPesin(1);
         setBanka(0);
@@ -135,11 +134,11 @@ const EvAlis = () => {
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link text-white active bg-gradient-primary" href="../pages/alis.html">
+              <a class="nav-link text-white active bg-gradient-primary" >
                 <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
                   <i class="material-icons opacity-10">table_view</i>
                 </div>
-                <span class="nav-link-text ms-1"><Link to="./alis" style={{color: "white"}}>Alış İşlemlerim</Link></span>
+                <span class="nav-link-text ms-1"><Link to="/alis" style={{color: "white"}}>Alış İşlemlerim</Link></span>
               </a>
             </li>
           </ul>
@@ -167,7 +166,7 @@ const EvAlis = () => {
                 <li class="nav-item d-flex align-items-center">
                   <a href="../pages/sign-in.html" class="nav-link text-body font-weight-bold px-0">
                     <i class="fa fa-user me-sm-1"></i>
-                    <span class="d-sm-inline d-none">Giriş yap</span>
+                    <span class="d-sm-inline d-none"><Link to="/">Çıkış Yap</Link></span>
                   </a>
                 </li>
                 <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
@@ -297,9 +296,9 @@ const EvAlis = () => {
                         <div class="card-body pt-0 p-3 text-center">
                           <h6 class="text-center mb-0">Bankalı ödeme</h6>
                           <hr class="horizontal dark my-3" />
-                          <h5 class="mb-0"><label>Fiyat <input style={{width: "100%",display:"inline-block"}} type="text" value={fiyat} onChange={e => setFiyat(e.target.value)} placeholder="Toplam Tutar" readOnly/></label></h5>
-                          <h5 class="mb-0"><label>Çekilecek Kredi Tutari <input type="text" style={{width: "100%",display:"inline-block"}} value={kredi} onChange={tutarHesapla} placeholder="Tutar" /></label></h5>
-                          <h5 class="mb-0"><label>Ödenecek Nakit Tutar <input type="text" style={{width: "100%",display:"inline-block"}} value={tutar} onChange={e => setTutar(e.target.value)} placeholder="Nakit Tutarı" /></label></h5>
+                          <h5 class="mb-0"><label>Fiyat <input style={{width: "100%",display:"inline-block"}} id="fiyat" type="text" value={fiyat} onChange={e => setFiyat(e.target.value)} placeholder="Toplam Tutar" readOnly/></label></h5>
+                          <h5 class="mb-0"><label>Çekilecek Kredi Tutari <input type="text" id="kredi" style={{width: "100%",display:"inline-block"}} value={kredi} onChange={tutarHesapla} placeholder="Tutar" /></label></h5>
+                          <h5 class="mb-0"><label>Ödenecek Nakit Tutar <input type="text" style={{width: "100%",display:"inline-block"}} value={tutar} placeholder="Nakit Tutarı" /></label></h5>
          
                           <div class="card-body p-3">
                             <div class="row">

@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 
 const EvSatis = () => {
 
-    const [data, setData] = useState();
+    const [rol, setRol] = useState("");
     const [tapular, setTapular] = useState([]);
     const [durumlar, setDurumlar] = useState([]);
 
@@ -13,6 +13,7 @@ const EvSatis = () => {
         let jsonData = require("./data/tapu.json");
         var tapu = [];
         var durum = [];
+        setRol(sessionStorage.getItem("rol"));
         for (let i = 0; i<jsonData.length; i++) {
             let sahipSayisi = jsonData[i].sahipler.length;
             for (let j = 0; j<sahipSayisi; j++) {
@@ -90,7 +91,7 @@ const EvSatis = () => {
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link text-white" href="../pages/alis.html">
+          <a class="nav-link text-white">
             <div class="text-white text-center me-2 d-flex align-items-center justify-content-center">
               <i class="material-icons opacity-10">table_view</i>
 
@@ -99,7 +100,7 @@ const EvSatis = () => {
 
 
             </div>
-            <span class="nav-link-text ms-1">Alış İşlemlerim</span>
+            <Link to="/alis" style={{color:"white"}}>Alış İşlemlerim</Link>
           </a>
         </li>
       </ul>
@@ -127,7 +128,7 @@ const EvSatis = () => {
             <li class="nav-item d-flex align-items-center">
               <a href="./pages/sign-in.html" class="nav-link text-body font-weight-bold px-0">
                 <i class="fa fa-user me-sm-1"></i>
-                <span class="d-sm-inline d-none">Giriş yap</span>
+                <span class="d-sm-inline d-none"><Link to="/">Çıkış Yap</Link></span>
               </a>
             </li>
             <li class="nav-item d-xl-none ps-3 d-flex align-items-center">
@@ -247,30 +248,29 @@ const EvSatis = () => {
                   <tbody>
                     <tr>
                         <td>
-                        <Link to="./evim" style={{textDecoration:"none"}} state={{from : 0 }}>Tapu Numarası 0</Link>
+                        {rol == "0" && <Link to="./evim" style={{textDecoration:"none"}} state={{from : 0 }}>Tapu Numarası 0</Link>}
                         </td>
                       <td>
                         <div class="d-flex px-2">
                           <div>
                           </div>
                           <div class="my-auto">
-                            <h6 class="mb-0 text-sm">Elite Grand Palas, kat: 2, daire:4
-                            </h6>
+                            {rol == "0" && <h6 class="mb-0 text-sm">Elite Grand Palas, kat: 2, daire:4</h6>}
                           </div>
                         </div>
                       </td>
                       <td>
-                        <p class="text-sm font-weight-bold mb-0">Pendik/İstanbul</p>
+                        {rol == "0" &&<p class="text-sm font-weight-bold mb-0">Pendik/İstanbul</p>}
                       </td>
                       <td>
-                        <span class="text-xs font-weight-bold">Satışta Değil</span>
+                      {rol == "0" && <span class="text-xs font-weight-bold">Satışta Değil</span>}
                       </td>
                       <td class="align-middle text-center">
                         <div class="d-flex align-items-center justify-content-center">
-                          <span class="me-2 text-xs font-weight-bold">100%</span>
+                        {rol == "0" &&<span class="me-2 text-xs font-weight-bold">100%</span>}
                           <div>
                             <div class="progress">
-                              <div class="progress-bar bg-gradient-success" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style={{width: "100%"}}></div>
+                            {rol == "0" &&<div class="progress-bar bg-gradient-success" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style={{width: "100%"}}></div>}
                             </div>
                           </div>
                         </div>
@@ -283,30 +283,29 @@ const EvSatis = () => {
                     </tr>
                     <tr>
                     <td>
-                        <Link to="./evim" style={{textDecoration:"none"}} state={{from : 1 }}>Tapu Numarası 1</Link>
+                    {rol == "0" &&<Link to="./evim" style={{textDecoration:"none"}} state={{from : 1 }}>Tapu Numarası 1</Link> }
                         </td>
                       <td>
                         <div class="d-flex px-2">
                           <div>
                           </div>
                           <div class="my-auto">
-                            <h6 class="mb-0 text-sm">Sitki Bey Apartmani, kat: 2, daire:4
-                            </h6>
+                          {rol == "0" &&<h6 class="mb-0 text-sm">Sitki Bey Apartmani, kat: 2, daire:4</h6>}
                           </div>
                         </div>
                       </td>
                       <td>
-                        <p class="text-sm font-weight-bold mb-0">Alaca/Konya</p>
+                      {rol == "0" &&<p class="text-sm font-weight-bold mb-0">Alaca/Konya</p>}
                       </td>
                       <td>
-                        <span class="text-xs font-weight-bold">Satışta Değil</span>
+                      {rol == "0" &&<span class="text-xs font-weight-bold">Satışta Değil</span>}
                       </td>
                       <td class="align-middle text-center">
                         <div class="d-flex align-items-center justify-content-center">
-                          <span class="me-2 text-xs font-weight-bold">100%</span>
+                        {rol == "0" &&<span class="me-2 text-xs font-weight-bold">100%</span>}
                           <div>
                             <div class="progress">
-                              <div class="progress-bar bg-gradient-success" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style={{width: "100%"}}></div>
+                            {rol == "0" &&<div class="progress-bar bg-gradient-success" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style={{width: "100%"}}></div>}
                             </div>
                           </div>
                         </div>
