@@ -1,15 +1,10 @@
 pragma solidity ^0.8.3;
-import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/token/ERC721/extensions/ERC721Burnable.sol";
-import "@openzeppelin/contracts/utils/Counters.sol";
+
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
-import "@openzeppelin/contracts/access/Ownable.sol";
-import "@openzeppelin/contracts/token/ERC20/extensions/draft-ERC20Permit.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
-import "@openzeppelin/contracts/token/ERC721/utils/ERC721Holder.sol";
 import "@openzeppelin/contracts/access/AccessControl.sol";
+
 
 contract Sale is AccessControl {
 
@@ -42,19 +37,13 @@ contract Sale is AccessControl {
     bytes32 private constant BUYER = keccak256("BUYER");
     bytes32 private constant BANK = keccak256("BANK");
 
-    constructor(address _stakeholderAddress, uint _percentage, uint _salePrice) {
+    constructor(address _stakeholderAddress, uint _percentage) {
         _grantRole(OWNER, msg.sender);
         owner = Owner(msg.sender, false, _stakeholderAddress, _percentage);
-        bank = Buyer(address(0), false, 0);
-        deedPrice = _salePrice;
     }
 
     function setPrice(uint256 _deedPrice) public onlyRole(OWNER){
         deedPrice = _deedPrice;
-        owner.approval = false;
-        buyer.approval = false;
-        bank.approval = false;
-        middleman.approval = false;
     }
 
     function addBuyer(address _buyer) public onlyRole(OWNER) {
@@ -63,36 +52,29 @@ contract Sale is AccessControl {
         buyer.addr = _buyer;
     }
 
-    function removeBuyer() public onlyRole(MIDDLEMAN) {
+    function removeBuyer() public onlyRole(OWNER) {
         buyer.addr = address(0);
     }
 
-    function approveOwner() public onlyRole(OWNER){
+    function approveOwner() public payable onlyRole(OWNER){
         owner.approval = true;
         IERC20 stakeholder = IERC20(owner.stakeholderAddress);
-        stakeholder.approve(address(this), owner.percentage);
+        stakeholder.transfer(address(this), owner.percentage);
     }
 
-    function approveBuyer(uint _price) public payable onlyRole(BUYER){
-        require(owner.approval, "Tapu sahibi onayi gerekiyor.");
-        buyer.paymentAmount = _price;
-        buyer.approval = true;
-        execute();
-    }
+    function execute() public payable {
 
-    function execute() public 
-    { 
-        require(owner.approval,"Tapu sahibi onayi gerekiyor.");
-        require(buyer.approval,"Alici onayi gerekiyor.");
-        require(buyer.paymentAmount >= deedPrice, "Alicinin yetkilendirdigi para tutari yeterli degildir.");
         IERC20 stakeholder = IERC20(owner.stakeholderAddress);
-        stakeholder.transferFrom(owner.addr, buyer.addr, 1); 
+        stakeholder.transfer(buyer.addr, owner.percentage); //with approve?
 
-//        IERC20 stakeholder = IERC20(owner.stakeholderAddress);
-//        stakeholder.transferFrom(owner.addr, buyer.addr, 1); 
+        IERC20 avax = IERC20(0xf8e81D47203A594245E36C48e151709F0C19fBe8);
+        avax.transfer(owner.addr, deedPrice); //with approve?
 
     }
 
+    function getAddress() public view returns(address){
+        return owner.stakeholderAddress;
+    }
 
     function getOwner() public view returns(address){
         return owner.addr;
@@ -105,5 +87,4 @@ contract Sale is AccessControl {
     function getPercentage() public view returns(uint){
         return owner.percentage;
     }
-
 }
